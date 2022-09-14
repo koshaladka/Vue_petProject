@@ -1,13 +1,19 @@
 <template>
     <div class="app">
         <h1> Список постов</h1>
+        <div class="app_btns">
+            <MyButton
+                @click="showDialog"
+                
+                >
+                Создать пост
+            </MyButton>
+            <MySelect
+                v-model="selectedSort"
+                :options="sortOptions"
+            />
+        </div>
        
-        <MyButton
-            @click="showDialog"
-            style="margin: 15px 0"
-        >
-            Создать пост
-        </MyButton>
         <MyDialog v-model:show="dialogVisible">
             <PostForm
             @create="createPost"
@@ -30,23 +36,30 @@
     import MyDialog from "./components/UI/MyDialog.vue";
     import MyButton from "./components/UI/MyButton.vue";
     import axios from "axios";
+import MySelect from "./components/UI/MySelect.vue";
 
 
 
     export default {
         components: {
-            PostForm,
-            PostList,
-            MyDialog,
-            MyButton,
-            MyButton
-         },
+    PostForm,
+    PostList,
+    MyDialog,
+    MyButton,
+    MyButton,
+    MySelect
+},
        
         data() {
             return {
                 posts: [ ],
                 dialogVisible: false,
-                isPostLoading: false,    
+                isPostLoading: false,
+                selectedSort: '',
+                sortOptions: [
+                    {value: 'title', name: 'По названию'},
+                    {value: 'body', name: 'По содержанию'},
+                ]    
             }
         },
 
@@ -62,9 +75,8 @@
                 this.dialogVisible = true;
             },
             async fetchPosts() {
-                this.isPostLoading = true;
-                setTimeout( async () => {
                     try {
+                        this.isPostLoading = true;
                         const response = await axios.get('https://jsonplaceholder.typicode.com/posts?_limit=10') 
                         this.posts = response.data;
                     } catch (e) {
@@ -72,7 +84,6 @@
                     } finally {
                         this.isPostLoading = false;
                     }
-                }, 1000)
             }
         },
 
@@ -92,6 +103,12 @@
 
     .app {
         padding: 20px;
+    }
+
+    .app_btns {
+        display: flex;
+        justify-content: space-between;
+        margin: 15px 0;
     }
 
     
