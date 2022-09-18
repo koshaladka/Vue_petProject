@@ -3,7 +3,7 @@
         <h1> Список постов</h1>
         <MyInput
             v-model="searchQuery"
-            placeholder="Поиск..."
+            placeholder="Поиск....."
         />
         <div class="app_btns">
             <MyButton
@@ -30,8 +30,9 @@
             v-if="!isPostLoading"
         />
         <div v-else> Идет загрузка... </div>
+        <div ref="observer" class="observer"></div>
         
-        <div class="page_wrapper">
+        <!-- <div class="page_wrapper">
             <div 
                 v-for="pageNumber in totalPages" 
                 :key="pageNumber"
@@ -39,11 +40,12 @@
                 :class="{
                     'current_page': page === pageNumber
                 }"
+                @click="changePage(pageNumber)"
             >
                 {{pageNumber}}
             </div>
 
-        </div>
+        </div> -->
     </div>
 </template>
 
@@ -97,6 +99,9 @@ import MyInput from "./components/UI/MyInput.vue";
             showDialog () {
                 this.dialogVisible = true;
             },
+            /* changePage (pageNumber) {
+                this.page = pageNumber;
+            }, */
             async fetchPosts() {
                     try {
                         this.isPostLoading = true;
@@ -111,11 +116,37 @@ import MyInput from "./components/UI/MyInput.vue";
                     } finally {
                         this.isPostLoading = false;
                     }
+            },
+            async loadingMorePosts() {
+                    try {
+                        this.page += 1;
+                        const response = await axios.get('https://jsonplaceholder.typicode.com/posts', {params: {
+                            _page: this.page,
+                            _limit: this.limit
+                        }});
+                        this.totalPages = Math.ceil(response.headers['x-total-count'] / this.limit) 
+                        this.posts = [...this.posts, ...response.data];
+                    } catch (e) {
+                        alert("Что то пошло не так...")
+                    } 
             }
         },
 
         mounted() {
             this.fetchPosts();
+            
+            const options = {
+                rootMargin: '0px',
+                threshold: 1.0
+            }
+            const callback = (entries, observer) => {
+                if(entries[0].isIntersecting && this.page < this.totalPages){
+                    this.loadingMorePosts()
+                }
+            }
+            const observer = new IntersectionObserver(callback, options);
+            observer.observe(this.$refs.observer);
+
         },
         computed: {
             sortedPosts() {
@@ -126,14 +157,12 @@ import MyInput from "./components/UI/MyInput.vue";
                 return this.sortedPosts.filter(post => post.title.toLowerCase().includes(this.searchQuery.toLowerCase()))
             }
         },
-        /* watch: {
-            selectedSort(newValue) {
-                this.posts.sort((post1, post2) => {
-                    return post1[this.selectedSort]?.localeCompare(post2[this.selectedSort])
-                })
-            },
-        } */
-    }
+        watch: {
+           /*  page() {
+                this.fetchPosts()
+            } */
+        }
+    } 
 
 </script>
 
@@ -165,11 +194,17 @@ import MyInput from "./components/UI/MyInput.vue";
         margin: 0 5px;
         padding: 10px;
         color: grey;
+        cursor: pointer;
     }
     .current_page {
         border: 2px solid teal;
         color: teal;
         font-weight: 600;
+        cursor: pointer;
+    }
+    .observer {
+        height: 30px;
+        background: teal;
     }
     
 

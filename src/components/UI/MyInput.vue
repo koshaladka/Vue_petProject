@@ -4,7 +4,8 @@
             :value="modelValue"
             @input="updateInput"  
             class="input" 
-            type="text"/>
+            type="text"
+            />
     </div>
 
 </template>

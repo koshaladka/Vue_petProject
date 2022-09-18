@@ -10,4 +10,6 @@ components.forEach(component => {
 });
 
 
-app.mount('#app')
+app
+    .use(router)    
+    .mount('#app')
