@@ -1,10 +1,20 @@
 import Main from "@/pages/Main";
+import UserPage from "@/pages/UserPage";
+import About from "@/pages/About";
 import { createRouter, createWebHistory } from "vue-router";
 
 const routes = [
     {
         path: '/',
-        components: Main
+        component: Main
+    },
+    {
+        path: '/posts',
+        component: UserPage
+    },
+    {
+        path: '/about',
+        component: About
     }
 ]
 
