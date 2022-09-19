@@ -1,9 +1,9 @@
 <template>
     <div class="navbar">
-        <div>Vue 3</div>
+        <div @click="$router.push('/')">Vue 3</div>
         <div class="navbar_btns">
-            <MyButton>Посты</MyButton>
-            <MyButton style="margin-left: 20px">О проектe</MyButton>
+            <MyButton @click="$router.push('/posts')">Посты</MyButton>
+            <MyButton @click="$router.push('/about')" style="margin-left: 20px" >О проектe</MyButton>
         </div>
     </div>
 </template>

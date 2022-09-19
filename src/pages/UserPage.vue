@@ -2,6 +2,7 @@
     <div >
         <h1> Список постов</h1>
         <MyInput
+            v-focus
             v-model="searchQuery"
             placeholder="Поиск....."
         />
@@ -29,8 +30,10 @@
             @remove="removePost"
             v-if="!isPostLoading"
         />
+
         <div v-else> Идет загрузка... </div>
-        <div ref="observer" class="observer"></div>
+        <div v-intersection="loadingMorePosts" class="observer"></div>
+       <!--  <div ref="observer" class="observer"></div> -->
         
         <!-- <div class="page_wrapper">
             <div 
@@ -55,8 +58,8 @@
     import MyDialog from "@/components/UI/MyDialog.vue";
     import MyButton from "@/components/UI/MyButton.vue";
     import axios from "axios";
-import MySelect from "@/components/UI/MySelect.vue";
-import MyInput from "@/components/UI/MyInput.vue";
+    import MySelect from "@/components/UI/MySelect.vue";
+    import MyInput from "@/components/UI/MyInput.vue";
 
 
 
@@ -135,17 +138,7 @@ import MyInput from "@/components/UI/MyInput.vue";
         mounted() {
             this.fetchPosts();
             
-            const options = {
-                rootMargin: '0px',
-                threshold: 1.0
-            }
-            const callback = (entries, observer) => {
-                if(entries[0].isIntersecting && this.page < this.totalPages){
-                    this.loadingMorePosts()
-                }
-            }
-            const observer = new IntersectionObserver(callback, options);
-            observer.observe(this.$refs.observer);
+          
 
         },
         computed: {
