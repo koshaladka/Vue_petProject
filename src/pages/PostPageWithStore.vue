@@ -1,5 +1,6 @@
 <template>
     <div >
+        <h2>{{$store.state.isAuth ? "Пользователь авторизован " : "Авторизируйтесь, чтобы использовать сервис"}}</h2>
         <h2>{{$store.getters.doubleLikes}}</h2>
         <div>
             <MyButton @click="$store.commit('incrementLikes')">Like</MyButton>
