@@ -40,7 +40,7 @@ export const postModule = {
             state.page = page;
         },
         setSearchQuery(state, searchQuery) {
-            state.page = searchQuery;
+            state.searchQuery = searchQuery;
         },
         setTotalPages(state, totalPages) {
             state.totalPages = totalPages;

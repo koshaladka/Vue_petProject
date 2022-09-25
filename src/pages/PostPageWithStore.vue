@@ -2,11 +2,12 @@
     <div >
        
         <h1> Список постов</h1>
-        <!-- <MyInput
-            v-focus
-            v-model="searchQuery"
+        <MyInput
+            :model-value="searchQuery"
+            @update:model-value="setSearchQuery"
             placeholder="Поиск....."
-        /> -->
+            v-focus
+        /> 
         <div class="app_btns">
             <MyButton
                 @click="showDialog"
@@ -14,10 +15,11 @@
                 >
                 Создать пост
             </MyButton>
-            <!-- <MySelect
-                v-model="selectedSort"
+            <MySelect
+                :model-value="selectedSort"
+                @update:model-value="setSelectedSort"
                 :options="sortOptions"
-            /> -->
+            /> 
         </div>
        
         <MyDialog v-model:show="dialogVisible">
@@ -70,7 +72,9 @@
 
         methods: {
             ...mapMutations({
-                setPage: 'post/setPage'
+                setPage: 'post/setPage',
+                setSearchQuery: 'post/setSearchQuery',
+                setSelectedSort: 'post/setSelectedSort'
             }),
             ...mapActions({
                 loadingMorePosts: 'post/loadingMorePosts',
