@@ -7,10 +7,7 @@
         v-focus
       />
       <div class="app__btns">
-        <my-button
-        >
-          Создать пользователя
-        </my-button>
+        
         <my-select
           v-model="selectedSort"
           :options="sortOptions"

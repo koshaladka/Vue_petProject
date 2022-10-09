@@ -1,6 +1,6 @@
 <template>
     <div class="navbar">
-        <div @click="$router.push('/')">Vue 3</div>
+        <div class="logo" @click="$router.push('/')">Vue 3</div>
         <div class="navbar_btns">
             <MyButton @click="$router.push('/posts')">Посты</MyButton>
             <MyButton @click="$router.push('/about')" style="margin-left: 20px" >О проектe</MyButton>
@@ -31,6 +31,12 @@ export default {
 
     .navbar_btns {
         margin-left: auto;
+    }
+
+    .logo {
+        cursor: pointer;
+        color: teal;
+        font-size: 24px;
     }
 
     
